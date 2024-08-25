@@ -1,0 +1,141 @@
+/* General Reset and Body Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e9ebf1;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+}
+/* Container Layout */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-gap: 15px; /* Reduced grid gap */
+    padding: 15px; /* Reduced padding */
+    max-width: 1200px; /* Reduced max-width */
+    margin: auto;
+}
+
+/* Column Styles */
+.left-column,
+.middle-column,
+.content {
+    background-color: #fff;
+    padding: 15px; /* Reduced padding */
+    border-radius: 8px; /* Slightly smaller border radius */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Slightly smaller shadow */
+    transition: transform 0.3s ease;
+}
+
+.left-column:hover,
+.middle-column:hover,
+.content:hover {
+    transform: translateY(-4px); /* Slightly smaller hover effect */
+}
+
+/* Section Styling */
+.section {
+    margin-bottom: 25px; /* Reduced margin */
+}
+
+.section h2 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 6px; /* Reduced padding */
+    margin-bottom: 12px; /* Reduced margin */
+    font-size: 1.2em; /* Slightly smaller font size */
+}
+
+/* Form Element Styles */
+label {
+    flex: 0 0 auto; /* Set a fixed width for the label */
+    margin-right: 5px; 
+    display: block;
+    margin-top: 2px; /* Reduced margin */
+    font-weight: bold;
+    color: #555;
+    font-size: 0.75em; /* Slightly smaller font size */
+
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    margin-top: 4px; /* Reduced margin */
+    margin-bottom: 6px; /* Reduced margin */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.75em; /* Slightly smaller font size */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    flex: 1 0 auto; /* Make the input fill the remaining space */
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+    border-color: #007bff;
+}
+
+input[readonly] {
+    background-color: #f7f7f7;
+}
+
+/* Content Section */
+.content h2 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 8px; /* Reduced padding */
+    margin-bottom: 12px; /* Reduced margin */
+    font-size: 1.2em; /* Slightly smaller font size */
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 18px; /* Reduced margin */
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Slightly smaller shadow */
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.9em; /* Slightly smaller font size */
+}
+
+th, td {
+    padding: 10px 12px; /* Reduced padding */
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.75em; /* Slightly smaller font size */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .content, .left-column, .middle-column {
+        padding: 12px; /* Reduced padding */
+        margin-bottom: 12px; /* Reduced margin */
+    }
+}

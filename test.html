@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Immobilier</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Colonne gauche : Le logement et La Fiscalité -->
+        <div class="left-column">
+            <section class="section">
+                <h2>Le logement</h2>
+                <label for="prix-logement">Prix du logement (€)</label>
+                <input type="number" id="prix-logement" value="70000">
+                
+                <label for="loyer-hors-charges">Loyer hors charges (€)</label>
+                <input type="number" id="loyer-hors-charges" value="610">
+                
+                <label for="charges-locatives">Charges locatives (€)</label>
+                <input type="number" id="charges-locatives" value="38">
+                
+                <label for="surface">Surface (m²)</label>
+                <input type="number" id="surface" value="55">
+                
+                <label for="travaux">Prix estimatif des travaux (€)</label>
+                <input type="number" id="travaux" value="1000">
+                
+                <label for="meubles">Prix des meubles (€)</label>
+                <input type="number" id="meubles" value="4000">
+                
+                <label for="charges-copropriete">Charges annuelles de copropriété (€)</label>
+                <input type="number" id="charges-copropriete" value="600">
+            </section>
+            
+            <section class="section">
+                <h2>La Fiscalité</h2>
+                <label for="frais-notaire">Frais notaire (€)</label>
+                <input type="number" id="frais-notaire" value="6800">
+
+                <label for="taxe-fonciere">Taxe foncière (€)</label>
+                <input type="number" id="taxe-fonciere" value="1029">
+                
+                <label for="taux-tom">Taux local de la taxe d'ordure ménagère (%)</label>
+                <input type="number" id="taux-tom" value="10">
+                
+                <label for="tom-calcule">Taxe d'ordure ménagère calculée (€)</label>
+                <input type="text" id="tom-calcule" readonly>
+                
+                <label for="cout-comptable">Coût du comptable (€)</label>
+                <input type="number" id="cout-comptable" value="200">
+            </section>
+        </div>
+
+        <!-- Colonne milieu : Les assurances et Le crédit -->
+        <div class="middle-column">
+            <section class="section">
+                <h2>Les assurances</h2>
+                <label for="assurance-loyers">Assurance loyers impayés (%)</label>
+                <input type="number" id="assurance-loyers" value="3">
+                
+                <label for="assurance-pno">Assurance propriétaire non occupant (€)</label>
+                <input type="number" id="assurance-pno" value="120">
+            </section>
+            
+            <section class="section">
+                <h2>Le crédit</h2>
+                <label for="apport">Apport (€)</label>
+                <input type="number" id="apport" value="10000">
+                
+                <label for="montant-emprunte">Montant emprunté (€)</label>
+                <input type="text" id="montant-emprunte" readonly>
+                
+                <label for="duree-pret">Durée du prêt (mois)</label>
+                <input type="number" id="duree-pret" value="240">
+                
+                <label for="taux-interets">Taux d'intérêts (%)</label>
+                <input type="number" id="taux-interets" value="3.85">
+                
+                <label for="taux-assurance">Taux d'assurance (%)</label>
+                <input type="number" id="taux-assurance" value="0.13">
+                
+                <label for="garanties-bancaires">Garanties bancaires (€)</label>
+                <input type="number" id="garanties-bancaires" value="1287">
+                
+                <label for="frais-dossier">Frais de dossier (€)</label>
+                <input type="number" id="frais-dossier" value="386">
+                
+                <label for="frais-courtier">Frais de courtier (€)</label>
+                <input type="number" id="frais-courtier" value="0">
+            </section>
+        </div>
+
+        <!-- Colonne droite : Récapitulatif Annuel -->
+        <div class="content">
+            <h2>Récapitulatif Annuel du Projet (30 ans)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Année</th>
+                        <th colspan="4">Profit and Loss</th>
+                        <th colspan="5">Crédit</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Profit cumulé (€)</th>
+                        <th>Profit Mensuel (€)</th>
+                        <th>Coûts annuel (€)</th>
+                        <th>Profits annuel (€)</th>
+                        <th>Mensualité (€)</th>
+                        <th>Capital remboursé (€)</th>
+                        <th>Intérêts payés (€)</th>
+                        <th>Capital remboursé cumulé (€)</th>
+                        <th>Cumul intérêts (€)</th>
+                    </tr>
+                </thead>
+                <tbody id="recap-table-body">
+                    <!-- Les lignes seront générées ici par JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
