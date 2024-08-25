@@ -11,7 +11,7 @@
         <!-- Colonne gauche : Le logement et La Fiscalité -->
         <div class="recapitulatif-global">
                 <div class="recap-item">
-                    <label>Loyer :</label>
+                    <label>Loyer (charges comprises) :</label>
                     <span id="recap-loyer">0 €</span>
                 </div>
                 <div class="recap-item">
@@ -31,124 +31,165 @@
                     <span id="recap-rendement-net">0 %</span>
                 </div>
                 <div class="recap-item">
-                    <label>Rendement net net (après impôt) :</label>
+                    <label><p style="margin-bottom: 0px;">Rendement net net</p> (après crédit et impôt) :</label>
                     <span id="recap-rendement-net-net">0 %</span>
                 </div>
         </div>
-        <div class="left-column">
+        <div class="">
             <section class="section">
-                <h2>Le projet</h2>
-                <label for="prix-logement">Prix du logement (€)</label>
-                <input type="number" id="prix-logement" value="70000">
-                
-                <label for="loyer-hors-charges">Loyer hors charges (€)</label>
-                <input type="number" id="loyer-hors-charges" value="610">
-                
-                <label for="charges-locatives">Charges locatives (€)</label>
-                <input type="number" id="charges-locatives" value="38">
-                
-                <label for="surface">Surface (m²)</label>
-                <input type="number" id="surface" value="55">
-                
-                <label for="travaux">Prix estimatif des travaux (€)</label>
-                <input type="number" id="travaux" value="1000">
-                
-                <label for="meubles">Prix des meubles (€)</label>
-                <input type="number" id="meubles" value="4000">
-                
-                <label for="charges-copropriete">Charges annuelles de copropriété (€)</label>
-                <input type="number" id="charges-copropriete" value="600">
+                <div class="left-column">
 
-                <label for="frais-notaire">Frais notaire (€)</label>
-                <input type="number" id="frais-notaire" value="6800">
+                    <h2>Le projet</h2>
+                    <label for="prix-logement">Prix du logement (€)</label>
+                    <input type="number" id="prix-logement" value="70000">
+                    
+                    <label for="loyer-hors-charges">Loyer hors charges (€)</label>
+                    <input type="number" id="loyer-hors-charges" value="610">
+                    
+                    <label for="charges-locatives">Charges locatives (€)</label>
+                    <input type="number" id="charges-locatives" value="38">
+                    
+                    <label for="surface">Surface (m²)</label>
+                    <input type="number" id="surface" value="55">
+                    
+                    <label for="travaux">Prix estimatif des travaux (€)</label>
+                    <input type="number" id="travaux" value="1000">
+                    
+                    <label for="meubles">Prix des meubles (€)</label>
+                    <input type="number" id="meubles" value="4000">
+                    
+                    <label for="charges-copropriete">Charges annuelles de copropriété (€)</label>
+                    <input type="number" id="charges-copropriete" value="600">
+
+                    <label for="frais-notaire">Frais notaire (€)</label>
+                    <input type="number" id="frais-notaire" value="6800">
+                 </div>
             </section>
-            
+           
+        
             <section class="section">
-                <h2>La Fiscalité</h2>
+                <div class="left-column">
+                    <h2>La Fiscalité</h2>
 
-                <label for="taxe-fonciere">Taxe foncière (€)</label>
-                <input type="number" id="taxe-fonciere" value="1029">
-                
-                <label for="taux-tom">Taux local de la taxe d'ordure ménagère (%)</label>
-                <input type="number" id="taux-tom" value="10">
-                
-                <label for="tom-calcule">Taxe d'ordure ménagère calculée (€)</label>
-                <input type="text" id="tom-calcule" readonly>
-                
-                <label for="tranche-impot">Tranche d'imposition (%)</label>
-                <input type="number" id="taxe-fonciere" value="30">
+                    <label for="taxe-fonciere">Taxe foncière (€)</label>
+                    <input type="number" id="taxe-fonciere" value="1029">
+                    
+                    <label for="taux-tom">Taux local de la taxe d'ordure ménagère (%)</label>
+                    <input type="number" id="taux-tom" value="10">
+                    
+                    <label for="tom-calcule">Taxe d'ordure ménagère calculée (€)</label>
+                    <input type="text" id="tom-calcule" readonly>
+                    
+                    <label for="tranche-impot">Tranche d'imposition (%)</label>
+                    <input type="number" id="taxe-fonciere" value="30">
 
-                <label for="cout-comptable">Coût du comptable (€)</label>
-                <input type="number" id="cout-comptable" value="200">
+                    <label for="cout-comptable">Coût du comptable (€)</label>
+                    <input type="number" id="cout-comptable" value="200">
+                 </div>
             </section>
         </div>
 
+
         <!-- Colonne milieu : Les assurances et Le crédit -->
-        <div class="middle-column">
+        <div class="">
             <section class="section">
-                <h2>Les assurances</h2>
-                <label for="assurance-loyers">Assurance loyers impayés (%)</label>
-                <input type="number" id="assurance-loyers" value="3">
-                
-                <label for="assurance-pno">Assurance propriétaire non occupant (€)</label>
-                <input type="number" id="assurance-pno" value="120">
+                <div class="left-column">
+                    <h2>Les assurances</h2>
+                    <label for="assurance-loyers">Assurance loyers impayés (%)</label>
+                    <input type="number" id="assurance-loyers" value="3">
+                    
+                    <label for="assurance-pno">Assurance propriétaire non occupant (€)</label>
+                    <input type="number" id="assurance-pno" value="120">
+                </div>
             </section>
             
             <section class="section">
-                <h2>Le crédit</h2>
-                <label for="apport">Apport (€)</label>
-                <input type="number" id="apport" value="10000">
-                
-                <label for="montant-emprunte">Montant emprunté (€)</label>
-                <input type="text" id="montant-emprunte" readonly>
-                
-                <label for="duree-pret">Durée du prêt (mois)</label>
-                <input type="number" id="duree-pret" value="240">
-                
-                <label for="taux-interets">Taux d'intérêts (%)</label>
-                <input type="number" id="taux-interets" value="3.85">
-                
-                <label for="taux-assurance">Taux d'assurance (%)</label>
-                <input type="number" id="taux-assurance" value="0.13">
-                
-                <label for="garanties-bancaires">Garanties bancaires (€)</label>
-                <input type="number" id="garanties-bancaires" value="1287">
-                
-                <label for="frais-dossier">Frais de dossier (€)</label>
-                <input type="number" id="frais-dossier" value="386">
-                
-                <label for="frais-courtier">Frais de courtier (€)</label>
-                <input type="number" id="frais-courtier" value="0">
+                <div class="left-column">
+                    <h2>Le crédit</h2>
+                    <label for="apport">Apport (€)</label>
+                    <input type="number" id="apport" value="10000">
+                    
+                    <label for="montant-emprunte">Montant emprunté (€)</label>
+                    <input type="text" id="montant-emprunte" readonly>
+                    
+                    <label for="duree-pret">Durée du prêt (mois)</label>
+                    <input type="number" id="duree-pret" value="240">
+                    
+                    <label for="taux-interets">Taux d'intérêts (%)</label>
+                    <input type="number" id="taux-interets" value="3.85">
+                    
+                    <label for="taux-assurance">Taux d'assurance (%)</label>
+                    <input type="number" id="taux-assurance" value="0.13">
+                    
+                    <label for="garanties-bancaires">Garanties bancaires (€)</label>
+                    <input type="number" id="garanties-bancaires" value="1287">
+                    
+                    <label for="frais-dossier">Frais de dossier (€)</label>
+                    <input type="number" id="frais-dossier" value="386">
+                    
+                    <label for="frais-courtier">Frais de courtier (€)</label>
+                    <input type="number" id="frais-courtier" value="0">
+                </div>
             </section>
         </div>
 
         <!-- Colonne droite : Récapitulatif Annuel -->
         <div class="content">
             <h2>Récapitulatif Annuel du Projet (30 ans)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Année</th>
-                        <th colspan="4">Profit and Loss</th>
-                        <th colspan="5">Crédit</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>Profit cumulé (€)</th>
-                        <th>Profit Mensuel (€)</th>
-                        <th>Coûts annuel (€)</th>
-                        <th>Profits annuel (€)</th>
-                        <th>Mensualité (€)</th>
-                        <th>Capital remboursé (€)</th>
-                        <th>Intérêts payés (€)</th>
-                        <th>Capital remboursé cumulé (€)</th>
-                        <th>Cumul intérêts (€)</th>
-                    </tr>
-                </thead>
-                <tbody id="recap-table-body">
-                    <!-- Les lignes seront générées ici par JavaScript -->
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <div class="">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Année</th>
+                            </tr>
+                            <tr>
+                                <th> <br></br>. </th>
+                            </tr>
+                        </thead>
+                        <tbody id="recap-annee-body">
+                            <!-- Les lignes seront générées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="4">Profit and Loss</th>
+                            </tr>
+                            <tr>
+                                <th>Profit cumulé (€)</th>
+                                <th>Profit Mensuel (€)</th>
+                                <th>Coûts annuel (€)</th>
+                                <th>Profits annuel (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recap-pl-body">
+                            <!-- Les lignes seront générées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="5">Crédit</th>
+                            </tr>
+                            <tr>
+                                <th>Mensualité (€)</th>
+                                <th>Capital remboursé (€)</th>
+                                <th>Intérêts payés (€)</th>
+                                <th>Capital remboursé cumulé (€)</th>
+                                <th>Cumul intérêts (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recap-credit-body">
+                            <!-- Les lignes seront générées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 

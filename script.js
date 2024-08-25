@@ -22,7 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
         assuranceLoyers: document.getElementById('assurance-loyers'),
         assurancePno: document.getElementById('assurance-pno'),
         coutComptable: document.getElementById('cout-comptable'),
-        recapTableBody: document.getElementById('recap-table-body')
+        recapAnneeBody: document.getElementById('recap-annee-body'),
+        recapPlBody: document.getElementById('recap-pl-body'),
+        recapCreditBody: document.getElementById('recap-credit-body'),
     };
 
     function calculerTom() {
@@ -55,7 +57,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function genererRecapAnnuel() {
-        inputs.recapTableBody.innerHTML = ''; // Clear existing rows
+        inputs.recapAnneeBody.innerHTML = ''; // Clear existing rows
+        inputs.recapPlBody.innerHTML = ''; // Clear existing rows
+        inputs.recapCreditBody.innerHTML = ''; // Clear existing rows
+
         const montantEmprunte = parseFloat(inputs.montantEmprunte.value) || 0;
         const dureePret = parseFloat(inputs.dureePret.value) || 0;
         const tauxInterets = parseFloat(inputs.tauxInterets.value) / 100 || 0;
@@ -84,13 +89,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const interetsPayesAnnuelInit = 0;
         const capitalRembourseCumuleInit = 0;
         const interetsCumulInit = 0;
-        const rowInit = `
+        const rowInitAnnee = `
             <tr>
                 <td>${anneeInit}</td>
+            </tr>
+        `;
+        const rowInitPl = `
+            <tr>
                 <td>${profitAndLossCumuleInit.toFixed(2)}</td>
                 <td>${profitAndLossMensuelInit.toFixed(2)}</td>
                 <td>${coutsAnnuelInit.toFixed(2)}</td>
                 <td>${profitsAnnuelInit.toFixed(2)}</td>
+            </tr>
+        `;
+        const rowInitCredit = `
+            <tr>
                 <td>${mensualiteInit.toFixed(2)}</td>
                 <td>${capitalRembourseAnnuelInit.toFixed(2)}</td>
                 <td>${interetsPayesAnnuelInit.toFixed(2)}</td>
@@ -98,7 +111,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${interetsCumulInit.toFixed(2)}</td>
             </tr>
         `;
-        inputs.recapTableBody.insertAdjacentHTML('beforeend', rowInit);
+        inputs.recapAnneeBody.insertAdjacentHTML('beforeend', rowInitAnnee);
+        inputs.recapPlBody.insertAdjacentHTML('beforeend', rowInitPl);
+        inputs.recapCreditBody.insertAdjacentHTML('beforeend', rowInitCredit);
 
         let profitAndLossCumule = profitAndLossCumuleInit;
 
@@ -127,44 +142,78 @@ document.addEventListener("DOMContentLoaded", function () {
             const profitAndLossMensuel = (profitsAnnuel - coutsAnnuel) / 12;
             profitAndLossCumule += profitsAnnuel - coutsAnnuel;
 
-            const row = `
+            const rowAnnee = `
                 <tr>
                     <td>${annee}</td>
+                </tr>
+            `;
+
+            const rowPl = `
+                <tr>
                     <td>${profitAndLossCumule.toFixed(2)}</td>
                     <td>${profitAndLossMensuel.toFixed(2)}</td>
                     <td>${coutsAnnuel.toFixed(2)}</td>
                     <td>${profitsAnnuel.toFixed(2)}</td>
-                    <td>${mensualite.toFixed(2)}</td>
-                    <td>${capitalRembourseAnnuel.toFixed(2)}</td>
-                    <td>${interetsPayesAnnuel.toFixed(2)}</td>
-                    <td>${capitalRembourseCumule.toFixed(2)}</td>
-                    <td>${interetsCumul.toFixed(2)}</td>
                 </tr>
             `;
-            inputs.recapTableBody.insertAdjacentHTML('beforeend', row);
+
+            if (annee > parseInt(dureePret / 12)) {
+                rowCredit = `
+                    <tr>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>${capitalRembourseCumule.toFixed(2)}</td>
+                        <td>${interetsCumul.toFixed(2)}</td>
+                    </tr>
+                `;
+            } else {
+                rowCredit = `
+                    <tr>
+                        <td>${mensualite.toFixed(2)}</td>
+                        <td>${capitalRembourseAnnuel.toFixed(2)}</td>
+                        <td>${interetsPayesAnnuel.toFixed(2)}</td>
+                        <td>${capitalRembourseCumule.toFixed(2)}</td>
+                        <td>${interetsCumul.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+            inputs.recapAnneeBody.insertAdjacentHTML('beforeend', rowAnnee);
+            inputs.recapPlBody.insertAdjacentHTML('beforeend', rowPl);
+            inputs.recapCreditBody.insertAdjacentHTML('beforeend', rowCredit);
+
         }
     }
 
     function updateRecapitulatifGlobal() {
-        const loyer = parseFloat(inputs.loyerHorsCharges.value) || 0;
-        const totalCharges = parseFloat(inputs.chargesLocatives.value) || 0
-                            + parseFloat(inputs.chargesCopropriete.value) || 0
-                            + parseFloat(inputs.assuranceLoyers.value) / 100 * loyer
+        const loyerHC = parseFloat(inputs.loyerHorsCharges.value);
+
+        const loyerCC = loyerHC + + parseFloat(inputs.chargesLocatives.value)
+
+
+        const montantEmprunte = parseFloat(inputs.montantEmprunte.value) || 0;
+        const dureePret = parseFloat(inputs.dureePret.value) || 0;
+        const tauxInterets = parseFloat(inputs.tauxInterets.value) / 100 || 0;
+        const tauxAssurance = parseFloat(inputs.tauxAssurance.value) / 100 || 0;
+        const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
+        
+        const totalCharges = parseFloat(inputs.chargesCopropriete.value) / 12
+                            + parseFloat(inputs.assuranceLoyers.value) / 100 * loyerHC
                             + parseFloat(inputs.assurancePno.value) / 12
                             + parseFloat(inputs.taxeFonciere.value) / 12
-                            + parseFloat(inputs.coutComptable.value) / 12;
+                            + parseFloat(inputs.coutComptable.value) / 12
+                            + mensualite;
                             
-        const mensualite = calculerMensualite(parseFloat(inputs.montantEmprunte.value) || 0, parseFloat(inputs.dureePret.value) || 0, parseFloat(inputs.tauxInterets.value) / 100 || 0) + (parseFloat(inputs.montantEmprunte.value) || 0) * (parseFloat(inputs.tauxAssurance.value) / 100) / 12;
+        const cashflowMensuel = loyerCC - totalCharges ;
 
-        const cashflowMensuel = loyer - totalCharges - mensualite;
-
-        const rendementBrut = (loyer * 12) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
-        const rendementNet = ((loyer * 12) - (totalCharges * 12)) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+        const rendementBrut = (loyerHC * 12) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+        const rendementNet = ((loyerCC * 12) - ((totalCharges-mensualite) * 12)) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
         // Hypothèse : impôts sont un pourcentage fixe du loyer brut, vous pouvez ajuster selon vos besoins
-        const impots = loyer * 12 * 0.2;
-        const rendementNetNet = ((loyer * 12) - (totalCharges * 12) - impots) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+        const impots = loyerCC * 12 * 0.2;
 
-        document.getElementById('recap-loyer').textContent = `${loyer.toFixed(2)} €`;
+        const rendementNetNet = ((loyerCC * 12) - (totalCharges * 12) - impots) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+
+        document.getElementById('recap-loyer').textContent = `${loyerCC.toFixed(2)} €`;
         document.getElementById('recap-total-charges').textContent = `${totalCharges.toFixed(2)} €`;
         document.getElementById('recap-cashflow').textContent = `${cashflowMensuel.toFixed(2)} €`;
         document.getElementById('recap-rendement-brut').textContent = `${rendementBrut.toFixed(2)} %`;

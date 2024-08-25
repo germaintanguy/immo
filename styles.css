@@ -17,14 +17,21 @@ body {
 .container {
     display: grid;
     grid-template-areas:
-    'header header header  '
-    'menu main main  '
-    'menu footer footer ';
+    'header header header  header'
+    'menu main main  main'
+    'menu footer footer footer';
     grid-gap: 15px; /* Reduced grid gap */
     padding: 15px; /* Reduced padding */
     max-width: auto; /* Reduced max-width */
     margin: auto;
 }
+
+.table-wrapper {
+    display: flex;
+    justify-content: space-between; /* Space between tables */
+    gap: 20px; /* Add space between tables */
+}
+
 
 .recapitulatif-global {
     display: flex;
@@ -59,19 +66,17 @@ body {
 /* Column Styles */
 .recapitulatif-global,
 .left-column,
-.middle-column,
 .content {
     background-color: #fff;
     padding: 15px; /* Reduced padding */
     border-radius: 8px; /* Slightly smaller border radius */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Slightly smaller shadow */
     transition: transform 0.3s ease;
-    
+
 }
 
 .recapitulatif-global:hover,
 .left-column:hover,
-.middle-column:hover,
 .content:hover {
     transform: translateY(-4px); /* Slightly smaller hover effect */
 }
@@ -166,12 +171,13 @@ tbody tr:hover {
     background-color: #f1f1f1;
 }
 
+
 /* Media Queries */
 @media (max-width: 768px) {
     .container {
         grid-template-columns: 1fr;
     }
-    .recapitulatif-global, .content, .left-column, .middle-column {
+    .recapitulatif-global, .content, .left-column {
         padding: 12px; /* Reduced padding */
         margin-bottom: 12px; /* Reduced margin */
     }
