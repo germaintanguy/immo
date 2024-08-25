@@ -145,9 +145,37 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function updateRecapitulatifGlobal() {
+        const loyer = parseFloat(inputs.loyerHorsCharges.value) || 0;
+        const totalCharges = parseFloat(inputs.chargesLocatives.value) || 0
+                            + parseFloat(inputs.chargesCopropriete.value) || 0
+                            + parseFloat(inputs.assuranceLoyers.value) / 100 * loyer
+                            + parseFloat(inputs.assurancePno.value) / 12
+                            + parseFloat(inputs.taxeFonciere.value) / 12
+                            + parseFloat(inputs.coutComptable.value) / 12;
+                            
+        const mensualite = calculerMensualite(parseFloat(inputs.montantEmprunte.value) || 0, parseFloat(inputs.dureePret.value) || 0, parseFloat(inputs.tauxInterets.value) / 100 || 0) + (parseFloat(inputs.montantEmprunte.value) || 0) * (parseFloat(inputs.tauxAssurance.value) / 100) / 12;
+
+        const cashflowMensuel = loyer - totalCharges - mensualite;
+
+        const rendementBrut = (loyer * 12) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+        const rendementNet = ((loyer * 12) - (totalCharges * 12)) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+        // Hypothèse : impôts sont un pourcentage fixe du loyer brut, vous pouvez ajuster selon vos besoins
+        const impots = loyer * 12 * 0.2;
+        const rendementNetNet = ((loyer * 12) - (totalCharges * 12) - impots) / (parseFloat(inputs.prixLogement.value) || 1) * 100;
+
+        document.getElementById('recap-loyer').textContent = `${loyer.toFixed(2)} €`;
+        document.getElementById('recap-total-charges').textContent = `${totalCharges.toFixed(2)} €`;
+        document.getElementById('recap-cashflow').textContent = `${cashflowMensuel.toFixed(2)} €`;
+        document.getElementById('recap-rendement-brut').textContent = `${rendementBrut.toFixed(2)} %`;
+        document.getElementById('recap-rendement-net').textContent = `${rendementNet.toFixed(2)} %`;
+        document.getElementById('recap-rendement-net-net').textContent = `${rendementNetNet.toFixed(2)} %`;
+    }
+
     function updateAll() {
         calculerTom();
         calculerMontantEmprunte();
+        updateRecapitulatifGlobal();
     }
 
     // Ajouter des écouteurs d'événements
