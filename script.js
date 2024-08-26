@@ -7,8 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
         apport: document.getElementById('apport'),
         taxeFonciere: document.getElementById('taxe-fonciere'),
         fraisNotaire: document.getElementById('frais-notaire'),
+        fraisAgence: document.getElementById('frais-agence'),
+        gestionAgence: document.getElementById('gestion-agence'),
         tauxTom: document.getElementById('taux-tom'),
         tomCalcule: document.getElementById('tom-calcule'),
+        trancheImpot: document.getElementById('tranche-impot'),
         montantEmprunte: document.getElementById('montant-emprunte'),
         dureePret: document.getElementById('duree-pret'),
         tauxInterets: document.getElementById('taux-interets'),
@@ -25,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
         recapAnneeBody: document.getElementById('recap-annee-body'),
         recapPlBody: document.getElementById('recap-pl-body'),
         recapCreditBody: document.getElementById('recap-credit-body'),
+        recapImpotBody: document.getElementById('recap-impot-body'),
+
     };
 
     function calculerTom() {
@@ -39,12 +44,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const travaux = parseFloat(inputs.travaux.value) || 0;
         const meubles = parseFloat(inputs.meubles.value) || 0;
         const fraisNotaire = parseFloat(inputs.fraisNotaire.value) || 0;
+        const fraisAgence = parseFloat(inputs.fraisAgence.value) || 0;
         const garantieBancaires = parseFloat(inputs.garantiesBancaires.value) || 0;
         const fraisDossier = parseFloat(inputs.fraisDossier.value) || 0;
         const fraisCourtier = parseFloat(inputs.fraisCourtier.value) || 0;
         const apport = parseFloat(inputs.apport.value) || 0;
 
-        const montantTotal = prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier;
+        const montantTotal = prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence;
         const montantEmprunte = montantTotal - apport;
         inputs.montantEmprunte.value = montantEmprunte.toFixed(2);
         genererRecapAnnuel(); // Ensure recap table updates after amount borrowed is calculated
@@ -60,13 +66,23 @@ document.addEventListener("DOMContentLoaded", function () {
         inputs.recapAnneeBody.innerHTML = ''; // Clear existing rows
         inputs.recapPlBody.innerHTML = ''; // Clear existing rows
         inputs.recapCreditBody.innerHTML = ''; // Clear existing rows
+        inputs.recapImpotBody.innerHTML = ''; // Clear existing rows
 
         const montantEmprunte = parseFloat(inputs.montantEmprunte.value) || 0;
         const dureePret = parseFloat(inputs.dureePret.value) || 0;
         const tauxInterets = parseFloat(inputs.tauxInterets.value) / 100 || 0;
         const tauxAssurance = parseFloat(inputs.tauxAssurance.value) / 100 || 0;
+        const gestionAgence = parseFloat(inputs.gestionAgence.value) / 100 || 0;
+        const trancheImpot = parseFloat(inputs.trancheImpot.value) / 100 || 0;
+       
+        const fraisNotaire = parseFloat(inputs.fraisNotaire.value) || 0;
+        const fraisAgence = parseFloat(inputs.fraisAgence.value) || 0;
+        const garantieBancaires = parseFloat(inputs.garantiesBancaires.value) || 0;
+        const fraisDossier = parseFloat(inputs.fraisDossier.value) || 0;
+        const fraisCourtier = parseFloat(inputs.fraisCourtier.value) || 0;
+        const travaux = parseFloat(inputs.travaux.value) || 0;
 
-        const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
+        let mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
         let capitalRestant = montantEmprunte;
         let interetsCumul = 0;
         let capitalRembourseCumule = 0;
@@ -79,6 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const taxeFonciere = parseFloat(inputs.taxeFonciere.value) || 0;
         const coutComptable = parseFloat(inputs.coutComptable.value) || 0;
 
+        const fraisGestionAgence = gestionAgence * (loyerHorsCharges+chargesLocatives)
+
+
         const anneeInit = 0
         const coutsAnnuelInit = parseFloat(inputs.apport.value) || 0;
         const profitAndLossCumuleInit = -coutsAnnuelInit;
@@ -89,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const interetsPayesAnnuelInit = 0;
         const capitalRembourseCumuleInit = 0;
         const interetsCumulInit = 0;
+        let impotReportable = fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux
         const rowInitAnnee = `
             <tr>
                 <td>${anneeInit}</td>
@@ -111,9 +131,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${interetsCumulInit.toFixed(2)}</td>
             </tr>
         `;
+        const rowInitImpot = `
+            <tr>
+                <td>${impotReportable}</td>
+            </tr>
+        `;
         inputs.recapAnneeBody.insertAdjacentHTML('beforeend', rowInitAnnee);
         inputs.recapPlBody.insertAdjacentHTML('beforeend', rowInitPl);
         inputs.recapCreditBody.insertAdjacentHTML('beforeend', rowInitCredit);
+        inputs.recapImpotBody.insertAdjacentHTML('beforeend', rowInitImpot);
 
         let profitAndLossCumule = profitAndLossCumuleInit;
 
@@ -122,6 +148,10 @@ document.addEventListener("DOMContentLoaded", function () {
             let interetsPayesAnnuel = 0;
             let profitsAnnuel = 0;
             let coutsAnnuel = 0;
+            if (annee > parseInt(dureePret / 12)) {
+                mensualite = 0
+            }
+
 
             for (let mois = 0; mois < 12; mois++) {
                 const interetsMensuels = capitalRestant * tauxInterets / 12;
@@ -131,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 capitalRestant -= capitalRembourseMensuel;
                 if (capitalRestant < 0) capitalRestant = 0;
 
-                const coutsMensuel = chargesCopropriete / 12 + loyerHorsCharges * assuranceLoyers + assurancePno / 12 + taxeFonciere / 12 + coutComptable / 12 + mensualite;
+                const coutsMensuel = chargesCopropriete / 12 + loyerHorsCharges * assuranceLoyers + assurancePno / 12 + taxeFonciere / 12 + coutComptable / 12 + mensualite + fraisGestionAgence;
                 profitsAnnuel += (loyerHorsCharges + chargesLocatives);
                 coutsAnnuel += coutsMensuel;
             }
@@ -139,7 +169,18 @@ document.addEventListener("DOMContentLoaded", function () {
             capitalRembourseCumule += capitalRembourseAnnuel;
             interetsCumul += interetsPayesAnnuel;
 
-            const profitAndLossMensuel = (profitsAnnuel - coutsAnnuel) / 12;
+            const coutsDeductibleAnnuel = (chargesCopropriete - chargesLocatives*12) + (loyerHorsCharges * assuranceLoyers * 12) + assurancePno + taxeFonciere + coutComptable + fraisGestionAgence + interetsPayesAnnuel; 
+            impotReportable = (loyerHorsCharges*12 - coutsDeductibleAnnuel)*trancheImpot - impotReportable;
+
+            if (impotReportable < 0) {
+                impot = 0;
+                impotReportable = -impotReportable;
+            } else {
+                impot = impotReportable;
+                impotReportable = 0;
+            }
+
+            const profitAndLossMensuel = (profitsAnnuel - coutsAnnuel -impot) / 12;
             profitAndLossCumule += profitsAnnuel - coutsAnnuel;
 
             const rowAnnee = `
@@ -178,9 +219,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     </tr>
                 `;
             }
+
+            const rowImpot = `
+                <tr>
+                    <td>${impot.toFixed(2)}</td>
+                </tr>
+            `;
             inputs.recapAnneeBody.insertAdjacentHTML('beforeend', rowAnnee);
             inputs.recapPlBody.insertAdjacentHTML('beforeend', rowPl);
             inputs.recapCreditBody.insertAdjacentHTML('beforeend', rowCredit);
+            inputs.recapImpotBody.insertAdjacentHTML('beforeend', rowImpot);
 
         }
     }

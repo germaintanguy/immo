@@ -35,7 +35,7 @@
                     <span id="recap-rendement-net-net">0 %</span>
                 </div>
         </div>
-        <div class="">
+        <div class="menu-haut-gauche">
             <section class="section">
                 <div class="left-column">
 
@@ -63,35 +63,16 @@
 
                     <label for="frais-notaire">Frais notaire (€)</label>
                     <input type="number" id="frais-notaire" value="6800">
+
+                    <label for="frais-agence">Frais agence (€)</label>
+                    <input type="number" id="frais-agence" value="0">
+
+                    <label for="gestion-agence">Gestion agence (%)</label>
+                    <input type="number" id="gestion-agence" value="0">
                  </div>
             </section>
            
-        
-            <section class="section">
-                <div class="left-column">
-                    <h2>La Fiscalité</h2>
 
-                    <label for="taxe-fonciere">Taxe foncière (€)</label>
-                    <input type="number" id="taxe-fonciere" value="1029">
-                    
-                    <label for="taux-tom">Taux local de la taxe d'ordure ménagère (%)</label>
-                    <input type="number" id="taux-tom" value="10">
-                    
-                    <label for="tom-calcule">Taxe d'ordure ménagère calculée (€)</label>
-                    <input type="text" id="tom-calcule" readonly>
-                    
-                    <label for="tranche-impot">Tranche d'imposition (%)</label>
-                    <input type="number" id="taxe-fonciere" value="30">
-
-                    <label for="cout-comptable">Coût du comptable (€)</label>
-                    <input type="number" id="cout-comptable" value="200">
-                 </div>
-            </section>
-        </div>
-
-
-        <!-- Colonne milieu : Les assurances et Le crédit -->
-        <div class="">
             <section class="section">
                 <div class="left-column">
                     <h2>Les assurances</h2>
@@ -102,7 +83,12 @@
                     <input type="number" id="assurance-pno" value="120">
                 </div>
             </section>
-            
+        </div>
+
+
+        <!-- Colonne milieu : Les assurances et Le crédit -->
+        <div class="menu-haut-droite">
+       
             <section class="section">
                 <div class="left-column">
                     <h2>Le crédit</h2>
@@ -131,7 +117,94 @@
                     <input type="number" id="frais-courtier" value="0">
                 </div>
             </section>
+
+        
+            <section class="section">
+                <div class="left-column">
+                    <h2>La Fiscalité</h2>
+
+                    <label for="taxe-fonciere">Taxe foncière (€)</label>
+                    <input type="number" id="taxe-fonciere" value="1029">
+                    
+                    <label for="taux-tom">Taux local de la taxe d'ordure ménagère (%)</label>
+                    <input type="number" id="taux-tom" value="10">
+                    
+                    <label for="tom-calcule">Taxe d'ordure ménagère calculée (€)</label>
+                    <input type="text" id="tom-calcule" readonly>
+                    
+                    <label for="tranche-impot">Tranche d'imposition (%)</label>
+                    <input type="number" id="tranche-impot" value="30">
+
+                    <label for="cout-comptable">Coût du comptable (€)</label>
+                    <input type="number" id="cout-comptable" value="200">
+                 </div>
+            </section>
         </div>
+
+        <div class="section-amortissements">
+            <div class="content">
+                <h2>Amortissements</h2>
+                
+                <!-- Titres des colonnes -->
+                <div class="amortissement-row">
+                    <label>    </label>
+                    <div class="amortissement-inputs">
+                        <label>Durée (an)</label>
+                        <label>Quote-part (%)</label>
+                    </div>
+                </div>
+
+                <!-- Lignes d'amortissements -->
+                <div class="amortissement-row">
+                    <label for="duree-amortissement-terrain">Terrain</label>
+                    <div class="amortissement-inputs">
+                        <input type="number" id="duree-amortissement-terrain" placeholder="Durée (an)" value=0 readonly>
+                        <input type="number" id="quote-part-terrain" placeholder="Quote-part (%)" value=0 readonly>
+                    </div>
+                </div>
+
+                <div class="amortissement-row">
+                    <label for="duree-amortissement-amenagements">Aménagements intérieurs</label>
+                    <div class="amortissement-inputs">
+                        <input type="number" id="duree-amortissement-amenagements" placeholder="Durée (an)" value=12 readonly>
+                        <input type="number" id="quote-part-amenagements" placeholder="Quote-part (%)" value=0 readonly>
+                    </div>
+                </div>
+
+                <div class="amortissement-row">
+                    <label for="duree-amortissement-gros-oeuvre">Gros œuvre</label>
+                    <div class="amortissement-inputs">
+                        <input type="number" id="duree-amortissement-gros-oeuvre" placeholder="Durée (an)" value=50 readonly>
+                        <input type="number" id="quote-part-gros-oeuvre" placeholder="Quote-part (%)" value=0 readonly>
+                    </div>
+                </div>
+
+                <div class="amortissement-row">
+                    <label for="duree-amortissement-toiture">Toiture</label>
+                    <div class="amortissement-inputs">
+                        <input type="number" id="duree-amortissement-toiture" placeholder="Durée (an)" value=0 readonly>
+                        <input type="number" id="quote-part-toiture" placeholder="Quote-part (%)" value=0 readonly>
+                    </div>
+                </div>
+
+                <div class="amortissement-row">
+                    <label for="duree-amortissement-etancheite">Etanchéité</label>
+                    <div class="amortissement-inputs">
+                        <input type="number" id="duree-amortissement-etancheite" placeholder="Durée (an)" value=25 readonly>
+                        <input type="number" id="quote-part-etancheite" placeholder="Quote-part (%)" value=0 readonly>
+                    </div>
+                </div>
+
+                <div class="amortissement-row">
+                    <label for="duree-amortissement-elec">Installation électrique</label>
+                    <div class="amortissement-inputs">
+                        <input type="number" id="duree-amortissement-elec" placeholder="Durée (an)" value=30 readonly>
+                        <input type="number" id="quote-part-elec" placeholder="Quote-part (%)" value=0 readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Colonne droite : Récapitulatif Annuel -->
         <div class="content">
@@ -143,8 +216,8 @@
                             <tr>
                                 <th>Année</th>
                             </tr>
-                            <tr>
-                                <th> <br></br>. </th>
+                            <tr class="second-tr">
+                                <th> <br></br> </th>
                             </tr>
                         </thead>
                         <tbody id="recap-annee-body">
@@ -158,7 +231,7 @@
                             <tr>
                                 <th colspan="4">Profit and Loss</th>
                             </tr>
-                            <tr>
+                            <tr class="second-tr">
                                 <th>Profit cumulé (€)</th>
                                 <th>Profit Mensuel (€)</th>
                                 <th>Coûts annuel (€)</th>
@@ -176,7 +249,7 @@
                             <tr>
                                 <th colspan="5">Crédit</th>
                             </tr>
-                            <tr>
+                            <tr class="second-tr">
                                 <th>Mensualité (€)</th>
                                 <th>Capital remboursé (€)</th>
                                 <th>Intérêts payés (€)</th>
@@ -189,8 +262,24 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="1">Impôt</th>
+                            </tr>
+                            <tr class="second-tr">
+                                <th> Meublé au réel (€) </th>
+                            </tr>
+                        </thead>
+                        <tbody id="recap-impot-body">
+                            <!-- Les lignes seront générées ici par JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
     </div>
 
     <script src="script.js"></script>
