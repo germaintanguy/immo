@@ -2,9 +2,16 @@
 
 document.addEventListener("DOMContentLoaded", function () {
    
+    const annee_max = 30
+    const y_label = [`Année 0`]
+    const x_axis =[]
+
+
 
     // Sélection des éléments du DOM
     const inputs = {
+        prixTotalProjet: document.getElementById('recap-prix-total'),
+        prixTotalProjetHover: document.getElementById('recap-prix-total-hover'),
         prixLogement: document.getElementById('prix-logement'),
         travaux: document.getElementById('travaux'),
         meubles: document.getElementById('meubles'),
@@ -41,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         recapRendementBrut: document.getElementById('recap-rendement-brut'),
         recapRendementNet: document.getElementById('recap-rendement-net'),
         recapRendementNetHover: document.getElementById('recap-rendement-net-hover'),
-        recapRendementNetNet:document.getElementById('recap-rendement-net-net'),
-
 
     };
 
@@ -75,8 +80,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const assurancePno = getFloat(inputs.assurancePno);
     const coutComptable = getFloat(inputs.coutComptable);
 
-    const montantTotal = prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence;
-    const montantEmprunte = montantTotal - apport;
+    const montantTotal = {
+        description: `prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence`,
+        value: prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence
+    };
+    const montantEmprunte = montantTotal.value - apport;
     const fraisGestionAgence = gestionAgence * (loyerHorsCharges+chargesLocatives);
     const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
     
@@ -219,10 +227,11 @@ document.addEventListener("DOMContentLoaded", function () {
             impotReportable
             )
 
-
+        x_axis.push(profitAndLossCumuleInit)
         let profitAndLossCumule = profitAndLossCumuleInit;
         let mensualiteCredit = mensualite
-        for (let annee = 1; annee <= 30; annee++) {
+        for (let annee = 1; annee <= annee_max; annee++) {
+            y_label.push(`Année ${annee}`);
             let capitalRembourseAnnuel = 0;
             let interetsPayesAnnuel = 0;
             let profitsAnnuel = 0;
@@ -261,8 +270,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const profitAndLossMensuel = (profitsAnnuel - coutsAnnuel -impot) / 12;
-            profitAndLossCumule += profitsAnnuel - coutsAnnuel;
+            profitAndLossCumule += profitsAnnuel - coutsAnnuel -impot;
 
+            x_axis.push(capitalRembourseCumule+profitAndLossCumule)
 
             updateTableRecap30(
                 annee,
@@ -299,18 +309,11 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         inputs.recapRendementNetHover.textContent = rendementNet.description;
 
-
-        const impots = loyerCC * 12 * 0.2;
-
-        const rendementNetNet = ((loyerCC * 12) - (totalChargesMensuel.value * 12) - impots) / prixLogement * 100;
-
-
-        inputs.recapLoyer.textContent = `${loyerCC.toFixed(2)} €`;
+        inputs.recapLoyer.textContent = `${loyerCC} €`;
         inputs.recapTotalCharges.textContent = `${totalChargesMensuel.value.toFixed(2)} €`;
         inputs.recapCashflow.textContent = `${cashflowMensuel.toFixed(2)} €`;
         inputs.recapRendementBrut.textContent = `${rendementBrut.toFixed(2)} %`;
         inputs.recapRendementNet.textContent = `${rendementNet.value.toFixed(2)} %`;
-        inputs.recapRendementNetNet.textContent = `${rendementNetNet.toFixed(2)} %`;
 
     }
 
@@ -332,6 +335,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     inputs.recapTotalChargesHover.textContent = totalChargesMensuel.description;
     inputs.recapImpotHover.textContent = impotInit.description;
+    inputs.prixTotalProjet.textContent = `${montantTotal.value} €`;
+    inputs.prixTotalProjetHover.textContent = montantTotal.description
+
+
+    var ctx = document.getElementById('earningsChart').getContext('2d');
+    var earningsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: y_label,
+            datasets: [{
+                label: "Profit si revente au prix d'achat sans frais additionel (capital remboursé - l'investissement initial)(€)",
+                data: x_axis, // Example data
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 
 
 });

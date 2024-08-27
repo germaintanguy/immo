@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculateur Immobilier</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
         <!-- Colonne gauche : Le logement et La Fiscalité -->
         <div class="recapitulatif-global">
+                <div class="recap-item tooltip" >
+                    <label>Prix total du projet :</label>
+                    <span id="recap-prix-total">0 €</span>
+                    <span id="recap-prix-total-hover" class="tooltiptext"></span>
+                </div>
                 <div class="recap-item" >
                     <label>Loyer (charges comprises) :</label>
                     <span id="recap-loyer">0 €</span>
@@ -32,10 +38,6 @@
                     <label>Rendement net :</label>
                     <span id="recap-rendement-net">0 %</span>
                     <span id="recap-rendement-net-hover" class="tooltiptext"></span>
-                </div>
-                <div class="recap-item">
-                    <label><p style="margin-bottom: 0px;">Rendement net net</p> (après crédit et impôt) :</label>
-                    <span id="recap-rendement-net-net">0 %</span>
                 </div>
         </div>
         <div class="menu-haut-gauche">
@@ -236,8 +238,8 @@
                                 <th colspan="4">Profit and Loss</th>
                             </tr>
                             <tr class="second-tr">
-                                <th>Profit cumulé (€)</th>
-                                <th>Profit Mensuel (€)</th>
+                                <th>P&L cumulé (€)</th>
+                                <th>P&L Mensuel (€)</th>
                                 <th>Coûts annuel (€)</th>
                                 <th>Profits annuel (€)</th>
                             </tr>
@@ -285,7 +287,17 @@
             </div>
         </div>
 
+
     </div>
+
+
+    <div class="container">
+        <div class="section graph">
+            <h2>Évolution des profits au fil des ans</h2>
+            <canvas id="earningsChart" width="400" height="200"></canvas>
+        </div>
+        </div>
+
 
     <script src="script.js"></script>
 </body>

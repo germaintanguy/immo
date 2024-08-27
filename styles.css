@@ -16,15 +16,16 @@ body {
 .menu-haut-gauche { grid-area: menuhautgauche; }
 .menu-haut-droite { grid-area: menuhautdroite; }
 .content { grid-area: main; }
-
 .section-amortissements { grid-area: menubas; }
+.graph {grid-area: header; }
 
 .container {
     display: grid;
     grid-template-areas:
     'header header header '
     'menuhautgauche menuhautdroite main '
-    'menubas menubas main ';
+    'menubas menubas main '
+    'footer footer footer ';
     grid-gap: 15px; /* Reduced grid gap */
     padding: 15px; /* Reduced padding */
     max-width: auto; /* Reduced max-width */
@@ -97,6 +98,7 @@ body {
 }
 
 /* Column Styles */
+.graph,
 .recapitulatif-global,
 .left-column,
 .content {
