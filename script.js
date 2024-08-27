@@ -1,4 +1,8 @@
+
+
 document.addEventListener("DOMContentLoaded", function () {
+   
+
     // Sélection des éléments du DOM
     const inputs = {
         prixLogement: document.getElementById('prix-logement'),
@@ -28,13 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
         recapAnneeBody: document.getElementById('recap-annee-body'),
         recapPlBody: document.getElementById('recap-pl-body'),
         recapCreditBody: document.getElementById('recap-credit-body'),
-        recapImpotBody: document.getElementById('recap-impot-body'),
+        recapImpotBody: document.getElementById('recap-impot-body'), 
+        recapImpotHover: document.getElementById('recap-impot-hover'),
         recapLoyer: document.getElementById('recap-loyer'),
         recapTotalCharges: document.getElementById('recap-total-charges'),
+        recapTotalChargesHover: document.getElementById('recap-total-charges-hover'),
         recapCashflow: document.getElementById('recap-cashflow'),
         recapRendementBrut: document.getElementById('recap-rendement-brut'),
         recapRendementNet: document.getElementById('recap-rendement-net'),
+        recapRendementNetHover: document.getElementById('recap-rendement-net-hover'),
         recapRendementNetNet:document.getElementById('recap-rendement-net-net'),
+
 
     };
 
@@ -71,14 +79,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const montantEmprunte = montantTotal - apport;
     const fraisGestionAgence = gestionAgence * (loyerHorsCharges+chargesLocatives);
     const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
-    const totalChargesMensuel = chargesCopropriete / 12
+    
+    const totalChargesMensuel = {
+        description:`
+                 chargesCopropriete / 12
+                                        + (assuranceLoyers * loyerHorsCharges)
+                                        + assurancePno / 12
+                                        + taxeFonciere / 12
+                                        + coutComptable / 12
+                                        + mensualite
+                                        + fraisGestionAgence
+        `,
+        value: chargesCopropriete / 12
                         + assuranceLoyers * loyerHorsCharges
                         + assurancePno / 12
                         + taxeFonciere / 12
                         + coutComptable / 12
                         + mensualite
-                        + fraisGestionAgence;
+                        + fraisGestionAgence
+    };
 
+    const impotInit = {
+        description: `fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux + meubles<600e`,
+        value: fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux + meubles
+    };
 
     function calculerTom() {
         const tom = taxeFonciere * tauxTom;
@@ -178,8 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const interetsPayesAnnuelInit = 0;
         const capitalRembourseCumuleInit = 0;
         const interetsCumulInit = 0;
-        let impotReportable = fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux
-
+        let impotReportable = impotInit.value;
 
         updateTableRecap30(
             anneeInit,
@@ -193,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
             capitalRembourseCumuleInit,
             interetsCumulInit,
             0,
-            -impotReportable
+            impotReportable
             )
 
 
@@ -204,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let interetsPayesAnnuel = 0;
             let profitsAnnuel = 0;
             let coutsAnnuel = 0;
-            let coutMensuel = totalChargesMensuel;
+            let coutMensuel = totalChargesMensuel.value;
 
             if (annee > parseInt(dureePret / 12)) {
                 mensualiteCredit = 0
@@ -263,22 +286,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const loyerCC = loyerHorsCharges + + chargesLocatives
                             
-        const cashflowMensuel = loyerCC - totalChargesMensuel ;
+        const cashflowMensuel = loyerCC - totalChargesMensuel.value ;
 
         const rendementBrut = (loyerHorsCharges * 12) / prixLogement * 100;
-        const rendementNet = ((loyerCC * 12) - ((totalChargesMensuel-mensualite) * 12)) / prixLogement * 100;
-        // Hypothèse : impôts sont un pourcentage fixe du loyer brut, vous pouvez ajuster selon vos besoins
+        const rendementNet = {
+            description: `
+                [(loyerCC - (totalChargesMensuel - mensualite)) * 12 * 100] 
+                                        / 
+                (prixLogement +fraisNotaire + fraisAgence + travaux)
+            `,
+            value: ((loyerCC - (totalChargesMensuel.value-mensualite)) * 12 * 100) / (prixLogement +fraisNotaire + fraisAgence + travaux)
+        };
+        inputs.recapRendementNetHover.textContent = rendementNet.description;
+
+
         const impots = loyerCC * 12 * 0.2;
 
-        const rendementNetNet = ((loyerCC * 12) - (totalChargesMensuel * 12) - impots) / prixLogement * 100;
+        const rendementNetNet = ((loyerCC * 12) - (totalChargesMensuel.value * 12) - impots) / prixLogement * 100;
 
 
         inputs.recapLoyer.textContent = `${loyerCC.toFixed(2)} €`;
-        inputs.recapTotalCharges.textContent = `${totalChargesMensuel.toFixed(2)} €`;
+        inputs.recapTotalCharges.textContent = `${totalChargesMensuel.value.toFixed(2)} €`;
         inputs.recapCashflow.textContent = `${cashflowMensuel.toFixed(2)} €`;
         inputs.recapRendementBrut.textContent = `${rendementBrut.toFixed(2)} %`;
-        inputs.recapRendementNet.textContent = `${rendementNet.toFixed(2)} %`;
+        inputs.recapRendementNet.textContent = `${rendementNet.value.toFixed(2)} %`;
         inputs.recapRendementNetNet.textContent = `${rendementNetNet.toFixed(2)} %`;
+
     }
 
     function updateAll() {
@@ -296,4 +329,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Calcul initial
     updateAll();
+
+    inputs.recapTotalChargesHover.textContent = totalChargesMensuel.description;
+    inputs.recapImpotHover.textContent = impotInit.description;
+
+
+});
+
+document.querySelectorAll('.tooltip').forEach(function(tooltip) {
+  tooltip.addEventListener('mouseenter', function() {
+    const tooltipText = tooltip.querySelector('.tooltiptext');
+    const rect = tooltipText.getBoundingClientRect();
+
+    if (rect.top < 0) {
+      tooltipText.style.top = '125%';
+      tooltipText.style.bottom = 'auto';
+    }
+  });
 });

@@ -10,25 +10,28 @@
     <div class="container">
         <!-- Colonne gauche : Le logement et La Fiscalité -->
         <div class="recapitulatif-global">
-                <div class="recap-item">
+                <div class="recap-item" >
                     <label>Loyer (charges comprises) :</label>
                     <span id="recap-loyer">0 €</span>
                 </div>
-                <div class="recap-item">
+                <div class="recap-item tooltip">
                     <label>Total charges :</label>
                     <span id="recap-total-charges">0 €</span>
+                    <span id="recap-total-charges-hover" class="tooltiptext"></span>
                 </div>
                 <div class="recap-item">
                     <label>Cashflow mensuel :</label>
                     <span id="recap-cashflow">0 €</span>
                 </div>
-                <div class="recap-item">
+                <div class="recap-item tooltip">
                     <label>Rendement brut :</label>
                     <span id="recap-rendement-brut">0 %</span>
+                    <span class="tooltiptext"> LoyerHC * 12 / prix du logement</span>
                 </div>
-                <div class="recap-item">
+                <div class="recap-item tooltip">
                     <label>Rendement net :</label>
                     <span id="recap-rendement-net">0 %</span>
+                    <span id="recap-rendement-net-hover" class="tooltiptext"></span>
                 </div>
                 <div class="recap-item">
                     <label><p style="margin-bottom: 0px;">Rendement net net</p> (après crédit et impôt) :</label>
@@ -141,10 +144,11 @@
             </section>
         </div>
 
-        <div class="section-amortissements">
-            <div class="content">
+        <div class="section-amortissements ">
+            <div class="content tooltip">
                 <h2>Amortissements</h2>
-                
+                <span class="tooltiptext"> Work in progress </span>
+
                 <!-- Titres des colonnes -->
                 <div class="amortissement-row">
                     <label>    </label>
@@ -262,9 +266,10 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="">
+                <div class="tooltip">
+                    <span id="recap-impot-hover" class="tooltiptext"></span>
                     <table>
-                        <thead>
+                        <thead >
                             <tr>
                                 <th colspan="1">Impôt</th>
                             </tr>
