@@ -55,72 +55,36 @@ document.addEventListener("DOMContentLoaded", function () {
         return parseFloat(element.value) || 0;
     };
 
-    const prixLogement = getFloat(inputs.prixLogement);
-    const travaux = getFloat(inputs.travaux);
-    const meubles = getFloat(inputs.meubles);
-    const taxeFonciere = getFloat(inputs.taxeFonciere);
-    const tauxTom = getFloat(inputs.tauxTom) / 100;
-    const fraisNotaire = getFloat(inputs.fraisNotaire);
-    const fraisAgence = getFloat(inputs.fraisAgence);
-    const garantieBancaires = getFloat(inputs.garantiesBancaires);
-    const fraisDossier = getFloat(inputs.fraisDossier);
-    const fraisCourtier = getFloat(inputs.fraisCourtier);
-    const apport = getFloat(inputs.apport);
-
-    const dureePret = getFloat(inputs.dureePret);
-    const tauxInterets = getFloat(inputs.tauxInterets) / 100;
-    const tauxAssurance = getFloat(inputs.tauxAssurance) / 100;
-    const gestionAgence = getFloat(inputs.gestionAgence) / 100;
-    const trancheImpot = getFloat(inputs.trancheImpot) / 100;
-    
-    const loyerHorsCharges = getFloat(inputs.loyerHorsCharges);
-    const chargesLocatives = getFloat(inputs.chargesLocatives);
-    const chargesCopropriete = getFloat(inputs.chargesCopropriete);
-    const assuranceLoyers = getFloat(inputs.assuranceLoyers) / 100;
-    const assurancePno = getFloat(inputs.assurancePno);
-    const coutComptable = getFloat(inputs.coutComptable);
-
-    const montantTotal = {
-        description: `prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence`,
-        value: prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence
-    };
-    const montantEmprunte = montantTotal.value - apport;
-    const fraisGestionAgence = gestionAgence * (loyerHorsCharges+chargesLocatives);
-    const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
-    
-    const totalChargesMensuel = {
-        description:`
-                 chargesCopropriete / 12
-                                        + (assuranceLoyers * loyerHorsCharges)
-                                        + assurancePno / 12
-                                        + taxeFonciere / 12
-                                        + coutComptable / 12
-                                        + mensualite
-                                        + fraisGestionAgence
-        `,
-        value: chargesCopropriete / 12
-                        + assuranceLoyers * loyerHorsCharges
-                        + assurancePno / 12
-                        + taxeFonciere / 12
-                        + coutComptable / 12
-                        + mensualite
-                        + fraisGestionAgence
-    };
-
-    const impotInit = {
-        description: `fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux + meubles<600e`,
-        value: fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux + meubles
-    };
 
     function calculerTom() {
+        const taxeFonciere = getFloat(inputs.taxeFonciere);
+        const tauxTom = getFloat(inputs.tauxTom) / 100;
         const tom = taxeFonciere * tauxTom;
         inputs.tomCalcule.value = tom.toFixed(2);
     }
 
 
     function calculerMontantEmprunte() {
+        const apport = getFloat(inputs.apport);
+        const prixLogement = getFloat(inputs.prixLogement);
+        const travaux = getFloat(inputs.travaux);
+        const meubles = getFloat(inputs.meubles);
+        const fraisNotaire = getFloat(inputs.fraisNotaire);
+        const fraisAgence = getFloat(inputs.fraisAgence);
+        const garantieBancaires = getFloat(inputs.garantiesBancaires);
+        const fraisDossier = getFloat(inputs.fraisDossier);
+        const fraisCourtier = getFloat(inputs.fraisCourtier);
+        const montantTotal = {
+            description: `prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence`,
+            value: prixLogement + travaux + meubles + fraisNotaire + garantieBancaires + fraisDossier + fraisCourtier + fraisAgence
+        };
+        const montantEmprunte = montantTotal.value - apport;
         inputs.montantEmprunte.value = montantEmprunte.toFixed(2);
-        genererRecapAnnuel(); // Ensure recap table updates after amount borrowed is calculated
+
+        inputs.prixTotalProjet.textContent = `${montantTotal.value} €`;
+        inputs.prixTotalProjetHover.textContent = montantTotal.description
+
+        return montantEmprunte
     }
 
     function calculerMensualite(montant, duree, taux) {
@@ -143,6 +107,9 @@ document.addEventListener("DOMContentLoaded", function () {
         impot,
         impotReportable
         ) {
+
+            const dureePret = getFloat(inputs.dureePret);
+
             const rowAnnee = `
                 <tr>
                     <td>${annee}</td>
@@ -191,11 +158,72 @@ document.addEventListener("DOMContentLoaded", function () {
             inputs.recapImpotBody.insertAdjacentHTML('beforeend', rowImpot);
     }
 
+    function getChargesMensuel(chargesCopropriete, assuranceLoyers, loyerHorsCharges, assurancePno, taxeFonciere, coutComptable, mensualite, fraisGestionAgence) {
+
+        const totalChargesMensuel = {
+            description:`
+                     chargesCopropriete / 12
+                                            + (assuranceLoyers * loyerHorsCharges)
+                                            + assurancePno / 12
+                                            + taxeFonciere / 12
+                                            + coutComptable / 12
+                                            + mensualite
+                                            + fraisGestionAgence
+            `,
+            value: chargesCopropriete / 12
+                            + assuranceLoyers * loyerHorsCharges
+                            + assurancePno / 12
+                            + taxeFonciere / 12
+                            + coutComptable / 12
+                            + mensualite
+                            + fraisGestionAgence
+        };
+        inputs.recapTotalChargesHover.textContent = totalChargesMensuel.description;
+        return totalChargesMensuel;
+    }
+
     function genererRecapAnnuel() {
         inputs.recapAnneeBody.innerHTML = ''; // Clear existing rows
         inputs.recapPlBody.innerHTML = ''; // Clear existing rows
         inputs.recapCreditBody.innerHTML = ''; // Clear existing rows
         inputs.recapImpotBody.innerHTML = ''; // Clear existing rows
+        
+
+        const dureePret = getFloat(inputs.dureePret);
+        const tauxInterets = getFloat(inputs.tauxInterets) / 100;
+        const tauxAssurance = getFloat(inputs.tauxAssurance) / 100;
+        const montantEmprunte = calculerMontantEmprunte();
+        const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
+    
+
+        const apport = getFloat(inputs.apport);
+
+        const loyerHorsCharges = getFloat(inputs.loyerHorsCharges);
+        const chargesLocatives = getFloat(inputs.chargesLocatives);
+        const chargesCopropriete = getFloat(inputs.chargesCopropriete);
+        const assuranceLoyers = getFloat(inputs.assuranceLoyers) / 100;
+        const assurancePno = getFloat(inputs.assurancePno);
+        const coutComptable = getFloat(inputs.coutComptable);
+        const taxeFonciere = getFloat(inputs.taxeFonciere);
+        const gestionAgence = getFloat(inputs.gestionAgence) / 100;
+        const fraisGestionAgence = gestionAgence * (loyerHorsCharges+chargesLocatives);
+        const totalChargesMensuel = getChargesMensuel(chargesCopropriete, assuranceLoyers, loyerHorsCharges, assurancePno, taxeFonciere, coutComptable, mensualite, fraisGestionAgence)
+
+        const trancheImpot = getFloat(inputs.trancheImpot) / 100;
+
+        const travaux = getFloat(inputs.travaux);
+        const meubles = getFloat(inputs.meubles);
+        const fraisNotaire = getFloat(inputs.fraisNotaire);
+        const fraisAgence = getFloat(inputs.fraisAgence);
+        const garantieBancaires = getFloat(inputs.garantiesBancaires);
+        const fraisDossier = getFloat(inputs.fraisDossier);
+        const fraisCourtier = getFloat(inputs.fraisCourtier);
+        const impotInit = {
+            description: `fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux + meubles<600e`,
+            value: fraisNotaire + fraisAgence + garantieBancaires + fraisDossier + fraisCourtier + travaux + meubles
+        };
+        inputs.recapImpotHover.textContent = impotInit.description;
+
 
         let capitalRestant = montantEmprunte;
         let interetsCumul = 0;
@@ -226,8 +254,8 @@ document.addEventListener("DOMContentLoaded", function () {
             0,
             impotReportable
             )
-
         x_axis.push(profitAndLossCumuleInit)
+
         let profitAndLossCumule = profitAndLossCumuleInit;
         let mensualiteCredit = mensualite
         for (let annee = 1; annee <= annee_max; annee++) {
@@ -246,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             for (let mois = 0; mois < 12; mois++) {
                 const interetsMensuels = capitalRestant * tauxInterets / 12;
-                const capitalRembourseMensuel = mensualiteCredit - interetsMensuels;
+                const capitalRembourseMensuel = mensualiteCredit - interetsMensuels - (montantEmprunte * tauxAssurance / 12);
                 interetsPayesAnnuel += interetsMensuels;
                 capitalRembourseAnnuel += capitalRembourseMensuel;
                 capitalRestant -= capitalRembourseMensuel;
@@ -294,6 +322,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateRecapitulatifGlobal() {
 
+        const dureePret = getFloat(inputs.dureePret);
+        const tauxInterets = getFloat(inputs.tauxInterets) / 100;
+        const tauxAssurance = getFloat(inputs.tauxAssurance) / 100;
+        const montantEmprunte = calculerMontantEmprunte();
+        const mensualite = calculerMensualite(montantEmprunte, dureePret, tauxInterets) + montantEmprunte * tauxAssurance / 12;
+    
+
+        const loyerHorsCharges = getFloat(inputs.loyerHorsCharges);
+        const chargesLocatives = getFloat(inputs.chargesLocatives);
+        const chargesCopropriete = getFloat(inputs.chargesCopropriete);
+        const assuranceLoyers = getFloat(inputs.assuranceLoyers) / 100;
+        const assurancePno = getFloat(inputs.assurancePno);
+        const coutComptable = getFloat(inputs.coutComptable);
+        const taxeFonciere = getFloat(inputs.taxeFonciere);
+        const gestionAgence = getFloat(inputs.gestionAgence) / 100;
+        const fraisGestionAgence = gestionAgence * (loyerHorsCharges+chargesLocatives);
+        const totalChargesMensuel = getChargesMensuel(chargesCopropriete, assuranceLoyers, loyerHorsCharges, assurancePno, taxeFonciere, coutComptable, mensualite, fraisGestionAgence)
+        const prixLogement = getFloat(inputs.prixLogement);
+        const travaux = getFloat(inputs.travaux);
+        const meubles = getFloat(inputs.meubles);
+        const fraisNotaire = getFloat(inputs.fraisNotaire);
+        const fraisAgence = getFloat(inputs.fraisAgence);
+        const garantieBancaires = getFloat(inputs.garantiesBancaires);
+        const fraisDossier = getFloat(inputs.fraisDossier);
+        const fraisCourtier = getFloat(inputs.fraisCourtier);
+
+    
+
         const loyerCC = loyerHorsCharges + + chargesLocatives
                             
         const cashflowMensuel = loyerCC - totalChargesMensuel.value ;
@@ -301,11 +357,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const rendementBrut = (loyerHorsCharges * 12) / prixLogement * 100;
         const rendementNet = {
             description: `
-                [(loyerCC - (totalChargesMensuel - mensualite)) * 12 * 100] 
+                [(loyerCC - (totalChargesMensuel - mensualiteCredit)) * 12 * 100] 
                                         / 
-                (prixLogement +fraisNotaire + fraisAgence + travaux)
+                (prixLogement +fraisNotaire + fraisAgence + travaux  + garantieBancaires + fraisDossier + fraisCourtier)
             `,
-            value: ((loyerCC - (totalChargesMensuel.value-mensualite)) * 12 * 100) / (prixLogement +fraisNotaire + fraisAgence + travaux)
+            value: ((loyerCC - (totalChargesMensuel.value - mensualite)) * 12 * 100) / (prixLogement +fraisNotaire + fraisAgence + travaux + garantieBancaires + fraisDossier + fraisCourtier)
         };
         inputs.recapRendementNetHover.textContent = rendementNet.description;
 
@@ -321,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
         calculerTom();
         calculerMontantEmprunte();
         updateRecapitulatifGlobal();
+        genererRecapAnnuel();
     }
 
     // Ajouter des écouteurs d'événements
@@ -332,11 +389,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Calcul initial
     updateAll();
-
-    inputs.recapTotalChargesHover.textContent = totalChargesMensuel.description;
-    inputs.recapImpotHover.textContent = impotInit.description;
-    inputs.prixTotalProjet.textContent = `${montantTotal.value} €`;
-    inputs.prixTotalProjetHover.textContent = montantTotal.description
 
 
     var ctx = document.getElementById('earningsChart').getContext('2d');

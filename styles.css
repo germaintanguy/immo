@@ -48,7 +48,6 @@ body {
   padding: 5px;
   position: absolute;
   z-index: 1;
-  bottom: 100%;
   left: 50%;
   margin-left: -70px;
   opacity: 0;
