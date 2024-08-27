@@ -397,7 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data: {
             labels: y_label,
             datasets: [{
-                label: "Profit si revente au prix d'achat sans frais additionel (capital remboursé - l'investissement initial)(€)",
+                label: "Profit si revente au prix d'achat sans frais additionel (capital remboursé - P&L cumulé)(€)",
                 data: x_axis, // Example data
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
