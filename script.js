@@ -1,5 +1,4 @@
 
-
 document.addEventListener("DOMContentLoaded", function () {
    
     const annee_max = 30
